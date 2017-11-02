@@ -1,5 +1,5 @@
 import team
-import football
+#import football
 from operator import itemgetter, attrgetter, methodcaller
 import csv
 import copy
@@ -37,7 +37,7 @@ def eternal_table(eternal_teams, teams):
 	print("")
 	print("Ewige Tabelle")
 	print("")
-	football.print_table(eternal_teams)
+	#football.print_table(eternal_teams)
 	print("_____________________________________________")
 	raw_input("Press Enter to continue...")
 	print("")

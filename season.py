@@ -2,7 +2,7 @@ import game
 import team
 import matchday
 import table
-import football
+#import football
 import test
 
 class Season:

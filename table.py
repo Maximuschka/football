@@ -1,6 +1,5 @@
 import team
 import copy
-import football
 
 
 class Table:
