@@ -91,8 +91,9 @@ def game_improved(team_a, team_b):
 			team_b.moral = team_b.moral+1
 		if team_a.moral > 0:
 			team_a.moral = team_a.moral-1
-
-	print(team_a.name + " - " + team_b.name + "   " + str(game1.score_team_a) + " : " + str(game1.score_team_b))
+	
+	#Output - Teamnames and Scores
+	print "{ta:23} |{g1} : {g2}| {tb:>23}".format(ta = team_a.name, tb = team_b.name, g1 = game1.score_team_a , g2=game1.score_team_b)
 
 	return(game1)
 
