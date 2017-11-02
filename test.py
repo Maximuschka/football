@@ -1,5 +1,5 @@
 import team
-import football
+#import football
 from operator import itemgetter, attrgetter, methodcaller
 import csv
 import copy
