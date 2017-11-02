@@ -1,0 +1,4 @@
+<team.Team instance at 0x02B0E148>
+<team.Team instance at 0x02B0CD50>
+<team.Team instance at 0x02B03E40>
+<team.Team instance at 0x02B0CF30>

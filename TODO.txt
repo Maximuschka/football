@@ -1,0 +1,25 @@
+- Komplexere Methode zur Berechnung eines Spielergebnisses ( 
+	Einfluss Moral (veränderlich über die Saison)
+	Torwahrscheinlichkeit zu bestimmten Spielzeiten
+	Moral: Integer in einem limitierten Bereich / Bei Sieg +1, 
+	Niederlage -1
+
+- Offensivität jedes Spielers (?)
+
+- Die Stärke der Spieler, soll sich ändern können
+	Abhängig von Spiel-/Saisonerfolg
+
+- Weitere Ligen mit Auf- und Abstieg
+	--> Es muss eine große Liste geben, in der alle Vereine sind,. Aus
+		dieser großen Liste, werden anhand des league Parameters,
+		Mannschaften bestimmten Liegen zugewiesen
+	--> Bei Auf- oder Abstiegen, verändert sich der league Parameter
+
+- Eine Funktion schrieben, die die Tabelle in ein CSV schreibt. Macht Sinn,
+da immer wieder darauf zugegriffen werden muss.
+
+- Die Funktion zur Berechnung aller Saisonergebnisse muss umgeschrieben 
+werden. Es sollte einen Matrix aus "Games" - Objekten sein, nicht aus 
+"Team" - Objekten.
+
+- Macht eine Klasse "Spieltag" (game day) Sinn?

@@ -1,0 +1,9 @@
+import game
+
+class Matchday:
+
+	def __init__(self):
+		self.matches = []
+		
+	def add_match(self, game):
+		self.matches.append(game)

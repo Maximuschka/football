@@ -37,7 +37,16 @@ def print_table(teams):
 	i = 0
     
 	while(i < count):
-		print(str(i+1) + ". - " + teams_sorted[i].name + "  " + str(teams_sorted[i].games_played) + "   "+ str(teams_sorted[i].points) + "   " + str(teams_sorted[i].get_diff_goals()) + "  " + str(int(teams_sorted[i].get_efficiency())) + "   Staerke: " + str(teams_sorted[i].strength)+ "   Taktik: " + str(teams_sorted[i].tactic)+ "   Moral: " + str(teams_sorted[i].moral))
+		print "{pos:3}. | {tname:23.23} |{tgp:2} | {tp:2}| {tdiff:3} | {teff:2}| {ts:2}| {tt:2} | {tm:2}".format(pos = i+1,
+																									tname = teams_sorted[i].name,
+																									tgp = teams_sorted[i].games_played, 
+																									tp = teams_sorted[i].points, 
+																									tdiff = teams_sorted[i].get_diff_goals(), 
+																									teff = int(teams_sorted[i].get_efficiency()), 
+																									ts = teams_sorted[i].strength, 
+																									tt = teams_sorted[i].tactic, 
+																									tm = teams_sorted[i].moral)
+		#~ print(str(i+1) + ". - " + teams_sorted[i].name + "  " + str(teams_sorted[i].games_played) + "   "+ str(teams_sorted[i].points) + "   " + str(teams_sorted[i].get_diff_goals()) + "  " + str(int(teams_sorted[i].get_efficiency())) + "   Staerke: " + str(teams_sorted[i].strength)+ "   Taktik: " + str(teams_sorted[i].tactic)+ "   Moral: " + str(teams_sorted[i].moral))
 		i = i+1
 
 def print_eternal_table(eternal_t, teams):
