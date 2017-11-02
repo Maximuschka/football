@@ -1,3 +1,5 @@
+#Max was here again
+
 from operator import itemgetter, attrgetter, methodcaller
 from random import randint
 import player
