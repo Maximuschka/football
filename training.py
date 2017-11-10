@@ -63,7 +63,8 @@ class Training:
 def improv_chance(trainer):
 	
 	chance = randint(0,100)
-	return chance < trainer
+	#~ return chance < trainer
+	return chance < 100
 	
 #propability is represented by a trainer. The better the trainer, 
 #the higher the chance of improv

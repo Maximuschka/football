@@ -4,120 +4,151 @@ import matchday
 import table
 #import football
 import test
+import league
 
 class Season:
 	
 	"""Class to store the information of a whole season"""
 
-	def __init__(self):
-		self.year = ""
+	def __init__(self, teams):
+		self.year = 2015
 		self.matchdays = []
-		self.leagues = ""
+		self.teams = teams
+		self.leagues = league.teams_to_leagues(self.teams)
 		
 	def add_matchday(self, matchday):
 		
 		"""Adding a single match day to the season"""
 		
 		self.matchdays.append(matchday)
+	
+	def set_new_season_matches(self):
+		for i in range (0,len(self.leagues)):
+			self.leagues[i].all_matches = get_all_matches(self.leagues[i].teams)
 
-def run_season(teams):
+	def set_next_year(self):
+		self.year = self.year + 1
+
+def season_different_leagues(season):
 	
 	"""calculates all results of a season and prints table after each game day
 	Input: list of instances of object Team
 	Output: printed results and table of each game day"""
-
-	teams = new_season(teams)
 	
-	matches = fixtures(teams)
-	set_matches = []
-	
-	s1_2017 = Season()
-
-	for f in matches:
-		n = len(f)
-		set_matches.append(zip(f[0:n/2],reversed(f[n/2:n])))
+	if season.leagues[0].teams[0].points > 0:
+		league_rise_descent(2,2,season)
 		
+	run_season(season)
+
+def run_season(season):
+	
+	"""calculates all results of a season and prints table after each game day
+	Input: list of instances of object Team
+	Output: printed results and table of each game day"""
+	
+	season = new_season(season)
+
+	#~ s1_2017 = Season()
+
 # i = Spieltag
 # j = Spiel / Spieltag
-# k = 
-	i = 0
 
-	while(i < len(teams)-1):
-		j = 0
+	"""Kleines Problem: Aktuell muessen alle Ligen gleich viele Teams haben (siehe folgende while Schliefe mit Iterator i)"""
+
+	for i in range (0,len(season.leagues[0].teams*2)-2):
 		dummy_matchday = matchday.Matchday()
 		
-		print(str(i+1) +". Spieltag")
-		print("")
-		while(j < len(teams)/2):
+		for k in range (0,len(season.leagues)):
 			
-			dummy_game = game.game_improved(set_matches[i][j][0], set_matches[i][j][1])
-			dummy_matchday.add_match(dummy_game)
-			
-			j = j+1
+			j = 0
 
-		s1_2017.add_matchday(dummy_matchday)
+			print(str(i+1) + ". Spieltag - " + str(k+1) + ". Liga")
+			print("")
 
-		i = i+1
-		
-		print("")
-		table.print_table(teams)
-		print("_____________________________________________")
-		raw_input("Press Enter to continue...")
-		print("")
+			while(j < len(season.leagues[k].teams)/2):
+				
+				game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
+				#~ dummy_game = game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
+				#~ dummy_matchday.add_match(dummy_game)
+				
+				j = j+1
+
+			#~ s1_2017.add_matchday(dummy_matchday)
+
+			print("")
+			table.print_table(season.leagues[k].teams)
+			print("_____________________________________________")
+			raw_input("Press Enter to continue...")
+			print("")
+
+	for i in range (0,len(season.leagues)):
+		if season.leagues[i].teams[0].league == 1:
+			teams_sorted = team.sort_teams(season.leagues[i].teams)
+			teams_sorted[0].title = teams_sorted[0].title + 1
 	
-	set_reverse_matches = swap_teams_matches(set_matches, len(teams))
+	print "Meister " + str(season.year) + ": " + teams_sorted[0].name
 
-	i = 0
-
-	while(i < len(teams)-1):
-		j = 0
-		dummy_matchday = matchday.Matchday()
-
-		print(str(i+1+len(teams)-1) +". Spieltag")
-		print("")
-		while(j < len(teams)/2):
-			
-			dummy_game = game.game_improved(set_reverse_matches[i][j][0], set_reverse_matches[i][j][1])
-			dummy_matchday.add_match(dummy_game)
-
-			j = j+1
-		
-		s1_2017.add_matchday(dummy_matchday)
-		
-		i = i+1
-
-		print("")
-		table.print_table(teams)
-		print("_____________________________________________")
-		raw_input("Press Enter to continue...")
-		print("")
-
-	if teams[0].league == 1:
-		teams_sorted = team.sort_teams(teams)
-		teams_sorted[0].title = teams_sorted[0].title + 1
-		print ""
-		print teams_sorted[0].name + " - Titel: " + str(teams_sorted[0].title)
-		print ""
-
-def season_different_leagues(teams):
-	
-	"""calculates all results of a season and prints table after each game day
+def new_season(season):
+	"""sets back parameters to initial values
 	Input: list of instances of object Team
-	Output: printed results and table of each game day"""
+	Output: list of parameters of object Team"""
 	
-	if teams[0].points > 0:
-		league_rise_descent(2,2,teams)
+	for i in range (0,len(season.leagues)):
 	
-	
-	all_teams = []
-	all_teams = get_teams_in_leagues(teams)
+		for team in season.leagues[i].teams:
+			team.games_played = 0
+			team.points = 0
+			team.scored_goals = 0
+			team.received_goals = 0
+			team.attempts = 0
+			for i in range(0, len(team.players)):
+				team.players[i].shot_goals = 0
+			team.set_positions()
+			team.ageing_players()
 
-	m = get_amount_leagues(teams)
+	season.set_new_season_matches()
+	
+	season.set_next_year()
 
-	for i in range (0,m):
-		print(str(i+1) + ".Liga")
-		print("")
-		run_season(all_teams[i])
+	return season
+
+def league_rise_descent(r,d, season):
+	
+	"""
+	input: list of instances of object Team, integer for number of teams rising (r) and number of teams descending (d)
+	output: list of instances of object Team
+	"""
+	
+	l = len(season.leagues)
+	
+	for i in range (0,l):
+		teams_sorted = team.sort_teams(season.leagues[i].teams)
+
+		if r > 0:
+			i=0
+			while i < r:
+				if teams_sorted[i].league > 1:
+					teams_sorted[i].league = teams_sorted[i].league - 1
+				
+					print "Aufsteiger aus " + str(teams_sorted[i].league+1) + ". Liga: " + teams_sorted[i].name
+				i = i+1
+		
+		if d > 0:
+			j=len(teams_sorted)-d
+			while j < len(teams_sorted):
+				if teams_sorted[j].league < l:
+					teams_sorted[j].league = teams_sorted[j].league + 1
+				
+					print "Absteiger aus " + str(teams_sorted[j].league-1) + ". Liga: " + teams_sorted[j].name
+				j = j+1
+				print ""
+
+	all_teams = get_list_of_teams_from_season(season)
+	teams_in_leagues = get_teams_in_leagues(all_teams)
+	
+	for i in range (0,len(season.leagues)):
+		season.leagues[i].teams = []
+		season.leagues[i].teams.extend(teams_in_leagues[i])
 
 
 def fixtures(teams):
@@ -138,6 +169,21 @@ def fixtures(teams):
         
 	return fixtures
 	
+def get_all_matches(teams):
+	
+	matches = fixtures(teams)
+	set_matches = []
+
+	for f in matches:
+		n = len(f)
+		set_matches.append(zip(f[0:n/2],reversed(f[n/2:n])))
+	
+	set_reverse_matches = swap_teams_matches(set_matches, len(teams))
+	
+	set_matches.extend(set_reverse_matches)
+	
+	return set_matches
+	
 def swap_teams_matches(set_matches, length):
 	"""reverses the two oponents in a single game, for all games
 	input is a list of a list of tuples (a) and an integer giving the amount of teams
@@ -149,60 +195,26 @@ def swap_teams_matches(set_matches, length):
 	
 	return set_matches
 
-def new_season(teams):
-	"""sets back parameters to initial values
-	Input: list of instances of object Team
-	Output: list of parameters of object Team"""
-	
-	for team in teams:
-		team.games_played = 0
-		team.points = 0
-		team.scored_goals = 0
-		team.received_goals = 0
-		team.attempts = 0
-		for i in range(0, len(team.players)):
-			team.players[i].shot_goals = 0
-		team.set_positions()
-		team.ageing_players()
-	return teams
-
-def league_rise_descent(r,d, teams):
+def get_amount_leagues(teams):
 	
 	"""
-	input: list of instances of object Team, integer for number of teams rising (r) and number of teams descending (d)
-	output: list of instances of object Team"""
+	Method to return the amount of leagues different Team objects are realted to
+	Input: list of Team instances
+	Output: integer
+	"""
 	
-	teams_in_leagues = []
-	teams_in_leagues = get_teams_in_leagues(teams)
-	l = get_amount_leagues(teams)
-	
-	for i in range (0,l):
-		teams_sorted = team.sort_teams(teams_in_leagues[i])
-
-		if r > 0:
-			i=0
-			while i < r:
-				if teams_sorted[i].league > 1:
-					teams_sorted[i].league = teams_sorted[i].league - 1
-				
-				print(teams_sorted[i].name + " " + str(teams_sorted[i].league))
-				i = i+1
-		
-		if d > 0:
-			j=len(teams_sorted)-d
-			while j < len(teams_sorted):
-				if teams_sorted[j].league < l:
-					teams_sorted[j].league = teams_sorted[j].league + 1
-				
-				print(teams_sorted[j].name + " " + str(teams_sorted[j].league))
-				j = j+1
-
-def get_amount_leagues(teams):
 	l = max(team.league for team in teams)
 
 	return l
 
 def get_teams_in_leagues(teams):
+	
+	"""
+	Method to retrieve an array of lists of instances of object Team. Each iterate of the array is representing a list of Team objects,
+	that are listed in the same league
+	Input: list of Team instances
+	Output: array of lists of Team instances
+	"""
 	
 	l = get_amount_leagues(teams)
 	
@@ -217,3 +229,17 @@ def get_teams_in_leagues(teams):
 		teams_in_leagues.append(dummy_teams)
 	
 	return teams_in_leagues
+
+def get_list_of_teams_from_season(season):
+	
+	"""
+	Method to retrieve all teams part of an object of class Season. These teams are taken from subclass League
+	Input: instance of Season
+	Output: list of instances of Team
+	"""
+	
+	all_teams = []
+	for i in range (0,len(season.leagues)):
+		all_teams.extend(season.leagues[i].teams)
+
+	return all_teams

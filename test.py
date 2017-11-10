@@ -4,4 +4,3 @@ from operator import itemgetter, attrgetter, methodcaller
 import csv
 import copy
 
-

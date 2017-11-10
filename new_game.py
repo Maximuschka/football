@@ -4,6 +4,7 @@ import test
 import test2
 import table
 import season
+import league
 
 A = team.Team("A",
                    "Wappen")
@@ -120,51 +121,89 @@ nuernberg = team.Team("1. FC Nuernberg",
                    "Wappen")
                    
 teams8 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt]
+teams16 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover]
 teams18 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc]
+teams24 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc, schalke, gladbach, augsburg, mainz, wolfsburg, hamburg]
 teams26 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc, schalke, gladbach, augsburg, mainz, wolfsburg, hamburg, pauli, nuernberg]
 
-team.set_league(teams26,3)
-team.set_league(teams18,2)
+#~ team.set_league(teams26,3)
+team.set_league(teams24,3)
+team.set_league(teams16,2)
+#~ team.set_league(teams18,2)
 team.set_league(teams8,1)
 
+season_1 = season.Season(teams24)
+
 eternal_table = table.Table("Ewige Tabelle")
+
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+season.season_different_leagues(season_1)
+eternal_table = table.print_eternal_table(eternal_table, teams24)
+team.print_teams_by_titles(teams24)
+
+
+test_teams = [A,B,C,D]
+test_teams_2 = [E,F,G,H]
+test_teams_3 = [I,J,K,L]
+test_teams_4 = [A,B,C,D,E,F,G,H,I,J,K,L]
+
+tt = [A,B,C,D,E,F,G,H]
+
+season_2 = season.Season(tt)
+
+team.set_league(test_teams,1)
+team.set_league(test_teams_2,2)
+team.set_league(test_teams_3,3)
+
+season_2 = season.Season(tt)
+
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+season.season_different_leagues(season_2)
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt)
+
+text_teams = team.get_teams_from_text()
 
 teams26[0].training_status = True
 print teams26[0].training_status
 teams26[0].trainer.print_trainer()
-
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
-season.season_different_leagues(teams26)
-eternal_table = table.print_eternal_table(eternal_table, teams26)
 
 #~ test_teams = [A,B,C,D]
 #~ test_teams_2 = [E,F,G,H]

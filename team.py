@@ -8,7 +8,7 @@ import trainer
 class Team:
 
 	def __init__(self, name, wappen_image):
-		self.category = randint(0,70)
+		self.category = randint(50,70)
 		self.name = name
 		self.wappen = wappen_image
 		self.trainer = self.add_trainer()
@@ -91,11 +91,26 @@ class Team:
 		train_team.train_feature(feature)
 
 
+
 def sort_teams(teams):
 	teams_sorted_diff = sorted(teams, key=lambda team:team.get_diff_goals(), reverse=True)
 	teams_sorted_points = sorted(teams_sorted_diff, key=attrgetter('points'), reverse=True)
 	
 	return teams_sorted_points
+
+def sort_teams_by_title(teams):
+
+	teams_sorted_title = sorted(teams, key=attrgetter('title'), reverse=True)
+	
+	return teams_sorted_title
+
+def get_teams_from_text():
+	teams = []
+	List = open("teams/teams.txt",'r').read().splitlines()
+	for i in range(0,len(List)):
+		dummy_team = Team(List[i], "Wappen")
+		teams.append(dummy_team)
+	return teams
 
 def get_teams_from_league(teams, league):
 	
@@ -150,3 +165,17 @@ def print_top_scorers(teams):
 		if player.shot_goals > 0:
 			print(player.first_name + " " + player.last_name + " - " + player.team + " : " + str(player.shot_goals))
 
+def print_teams_by_titles(teams):
+	teams_sorted = sort_teams_by_title(teams)
+	
+	print "{:2}#  | {:19.19}Team | {:1}T".format("","","")
+	
+	j = 0
+	
+	for i in range(0,len(teams_sorted)):
+		if teams_sorted[i].title > 0:
+			j = j+1
+			print "{pos:3}. | {tname:23.23} | {tt:2}".format(pos = j,
+															tname = teams_sorted[i].name, 
+															tt = teams_sorted[i].title)
+	print ""
