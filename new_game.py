@@ -1,10 +1,11 @@
 import team
 import player
-import test
-import test2
 import table
 import season
 import league
+import finances
+import manager
+import menues
 
 A = team.Team("A",
                    "Wappen")
@@ -41,190 +42,108 @@ K = team.Team("K",
 
 L = team.Team("L",
                    "Wappen")
-                                                        
-hertha = team.Team("Hertha BSC",
-                   "Wappen")
 
-bayern = team.Team("1. FC Bayern Muenchen",
-                   "Wappen")
+#~ test_teams = [A,B,C,D]
+#~ test_teams_2 = [E,F,G,H]
+#~ test_teams_3 = [I,J,K,L]
+#~ test_teams_4 = [A,B,C,D,E,F,G,H]
 
-dortmund = team.Team("BVB Dortmund",
-                   "Wappen")
+#~ tt = [A,B,C,D,E,F,G,H]
 
-duisburg = team.Team("MSV Duisburg",
-                   "Wappen")
+#~ manager_2 = manager.Manager(tt)
 
-union = team.Team("1.FC Union Berlin",
-                   "Wappen")
+#~ team.set_league(test_teams,1)
+#~ team.set_league(test_teams_2,2)
+#~ team.set_league(test_teams_3,3)
 
-leipzig = team.Team("RB Leipzig",
-                   "Wappen")
+season_1 = season.Season()
 
-freiburg = team.Team("1. FC Freiburg",
-                   "Wappen")
+#~ eternal_table = table.Table("Ewige Tabelle")
 
-frankfurt = team.Team("Eintracht Frankfurt",
-                   "Wappen")
+for i in range (0,100):
+	menues.start_menu(season_1, i)
 
-leverkusen = team.Team("Bayer Leverkusen",
-                   "Wappen")
+	for season_1.matchday in range (0,(len(season_1.leagues[0].teams)*2)-2):
+		season.run_season_md(season_1)
 
-hoffenheim = team.Team("TSG Hoffenheim",
-                   "Wappen")
+eternal_table = table.print_eternal_table(eternal_table, tt)
+team.print_teams_by_titles(tt) 
 
-bremen = team.Team("Werder Bremen",
-                   "Wappen")
+teams32 = team.get_teams_from_text(32)
+teams24 = teams32[0:24]
+teams16 = teams32[0:16]
+teams8 = teams32[0:8]
 
-kaiserslautern = team.Team("1. FC Kaierslautern",
-                   "Wappen")
+manager_1 = manager.Manager(teams32)
 
-stuttgart = team.Team("VfB Stuttgart",
-                   "Wappen")
-
-duesseldorf = team.Team("Fortuna Duesseldorf",
-                   "Wappen")
-
-koeln = team.Team("1. FC Koeln",
-                   "Wappen")
-
-hannover = team.Team("Hannover 96",
-                   "Wappen")
-
-dresden = team.Team("Dynamo Dresden",
-                   "Wappen")
-
-bfc = team.Team("Berliner FC Dynamo",
-                   "Wappen")
-
-schalke = team.Team("Schalke 04",
-                   "Wappen")
-
-gladbach = team.Team("Borussia Moenchengladbach",
-                   "Wappen")
-
-augsburg = team.Team("1. FC Augsburg",
-                   "Wappen")
-
-mainz = team.Team("Mainz 05",
-                   "Wappen")
-                   
-wolfsburg = team.Team("VfL Wolfsburg",
-                   "Wappen")
-
-hamburg = team.Team("Hamburger SV",
-                   "Wappen")
-
-pauli = team.Team("1. FC St. Pauli",
-                   "Wappen")
-                   
-nuernberg = team.Team("1. FC Nuernberg",
-                   "Wappen")
-                   
-teams8 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt]
-teams16 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover]
-teams18 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc]
-teams24 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc, schalke, gladbach, augsburg, mainz, wolfsburg, hamburg]
-teams26 = [hertha, bayern, dortmund, duisburg, union, leipzig, freiburg, frankfurt, leverkusen, hoffenheim, bremen, kaiserslautern, stuttgart, duesseldorf, koeln, hannover, dresden, bfc, schalke, gladbach, augsburg, mainz, wolfsburg, hamburg, pauli, nuernberg]
-
-#~ team.set_league(teams26,3)
+team.set_league(teams32,4)
 team.set_league(teams24,3)
 team.set_league(teams16,2)
-#~ team.set_league(teams18,2)
 team.set_league(teams8,1)
 
-season_1 = season.Season(teams24)
+season_1 = season.Season(teams32, manager_1)
 
 eternal_table = table.Table("Ewige Tabelle")
 
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
-season.season_different_leagues(season_1)
-eternal_table = table.print_eternal_table(eternal_table, teams24)
-team.print_teams_by_titles(teams24)
+for season_1.matchday in range (0,(len(season_1.leagues[0].teams)*2)-2):
+	season.season_different_leagues_md(season_1)
 
+eternal_table = table.print_eternal_table(eternal_table, teams32)
+team.print_teams_by_titles(teams32) 
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
+#~ season.season_different_leagues(season_1)
+#~ eternal_table = table.print_eternal_table(eternal_table, teams32)
+#~ team.print_teams_by_titles(teams32)
 
-test_teams = [A,B,C,D]
-test_teams_2 = [E,F,G,H]
-test_teams_3 = [I,J,K,L]
-test_teams_4 = [A,B,C,D,E,F,G,H,I,J,K,L]
-
-tt = [A,B,C,D,E,F,G,H]
-
-season_2 = season.Season(tt)
-
-team.set_league(test_teams,1)
-team.set_league(test_teams_2,2)
-team.set_league(test_teams_3,3)
-
-season_2 = season.Season(tt)
-
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-season.season_different_leagues(season_2)
-eternal_table = table.print_eternal_table(eternal_table, tt)
-team.print_teams_by_titles(tt)
-
-text_teams = team.get_teams_from_text()
-
-teams26[0].training_status = True
-print teams26[0].training_status
-teams26[0].trainer.print_trainer()
 
 #~ test_teams = [A,B,C,D]
 #~ test_teams_2 = [E,F,G,H]
 #~ test_teams_3 = [I,J,K,L]
 #~ test_teams_4 = [A,B,C,D,E,F,G,H,I,J,K,L]
 
+#~ tt = [A,B,C,D,E,F,G,H]
+
+#~ season_2 = season.Season(tt)
+
 #~ team.set_league(test_teams,1)
 #~ team.set_league(test_teams_2,2)
 #~ team.set_league(test_teams_3,3)
 
-#~ eternal_table = table.Table("Ewige Tabelle")
+#~ season_2 = season.Season(tt)
 
-#~ season.season_different_leagues(test_teams_4)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
+#~ season.season_different_leagues(season_2)
+#~ eternal_table = table.print_eternal_table(eternal_table, tt)
+#~ team.print_teams_by_titles(tt)
 
-#~ table.print_eternal_table(eternal_table, test_teams)
-
-#~ football.season(test_teams)
-
-#~ table.print_eternal_table(eternal_table, test_teams)
-
-#~ football.set_league(test_teams,1)
-#~ football.set_league(test_teams_2,2)
-#~ football.set_league(test_teams_3,3)
-
+#~ teams26[0].training_status = True
+#~ print teams26[0].training_status
+#~ teams26[0].trainer.print_trainer()

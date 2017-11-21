@@ -2,6 +2,7 @@
 
 import team
 import random
+import finances
 from operator import itemgetter, attrgetter, methodcaller 
 
 class Game:
@@ -25,16 +26,18 @@ def game_improved(team_a, team_b):
 	Outpt: two Team instances"""
 
 	if team_a.training_status == True:
-		team_a.train(0)
-		team_a.train(1)
-		team_a.train(2)
-		team_a.train(3)
+		team_a.train(random.randint(0,3))
+		#~ team_a.train(0)
+		#~ team_a.train(1)
+		#~ team_a.train(2)
+		#~ team_a.train(3)
 
 	if team_b.training_status == True:
-		team_b.train(0)
-		team_b.train(1)
-		team_b.train(2)
-		team_b.train(3)
+		team_b.train(random.randint(0,3))
+		#~ team_b.train(0)
+		#~ team_b.train(1)
+		#~ team_b.train(2)
+		#~ team_b.train(3)
 
 	game1 = Game(team_a,team_b)
 	team_a.set_tactic_random()
@@ -78,19 +81,25 @@ def game_improved(team_a, team_b):
 
 	if game1.score_team_a > game1.score_team_b:
 		team_a.points = team_a.points+3
+		#~ team_a.finances.set_matchday_cash_won()
 		if team_a.moral < 4:
 			team_a.moral = team_a.moral+1
 		if team_b.moral > 0:
 			team_b.moral = team_b.moral-1
 	elif game1.score_team_a == game1.score_team_b:
 		team_a.points = team_a.points+1
+		#~ team_a.finances.set_matchday_cash_draw()
 		team_b.points = team_b.points+1
+		#~ team_b.finances.set_matchday_cash_draw()
 	elif game1.score_team_a < game1.score_team_b:
 		team_b.points = team_b.points+3
+		#~ team_b.finances.set_matchday_cash_won()
 		if team_b.moral < 4:
 			team_b.moral = team_b.moral+1
 		if team_a.moral > 0:
 			team_a.moral = team_a.moral-1
+	
+	finances.set_matchday_cash(game1)
 	
 	#Output - Teamnames and Scores
 	print "{ta:23.23} |{g1} : {g2}| {tb:>23.23}".format(ta = team_a.name, tb = team_b.name, g1 = game1.score_team_a , g2=game1.score_team_b)

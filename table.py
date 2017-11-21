@@ -49,7 +49,7 @@ def print_table(teams):
 		#~ print(str(i+1) + ". - " + teams_sorted[i].name + "  " + str(teams_sorted[i].games_played) + "   "+ str(teams_sorted[i].points) + "   " + str(teams_sorted[i].get_diff_goals()) + "  " + str(int(teams_sorted[i].get_efficiency())) + "   Staerke: " + str(teams_sorted[i].strength)+ "   Taktik: " + str(teams_sorted[i].tactic)+ "   Moral: " + str(teams_sorted[i].moral))
 		i = i+1
 
-def print_eternal_table(eternal_t, teams):
+def update_eternal_table(eternal_t, teams):
 
 	teams_1 = team.get_teams_from_league(teams,1)
 	

@@ -4,11 +4,14 @@ from random import randint
 import player
 import training
 import trainer
+import finances
+import stadium
+import operator
 
 class Team:
 
 	def __init__(self, name, wappen_image):
-		self.category = randint(50,70)
+		self.category = randint(35,70)
 		self.name = name
 		self.wappen = wappen_image
 		self.trainer = self.add_trainer()
@@ -24,8 +27,10 @@ class Team:
 		self.strength = self.get_strength()
 		self.league = 1
 		self.title = 0
+		self.finances = finances.Finances(self)
+		self.stadium = stadium.Stadium(self)
 
-		#Team category - good (70) or bad (0) - influences player strength when initiating Players
+		#Team category - good (70) or bad (35) - influences player strength when initiating Players
 
 	def get_name(self):
 		return self.name
@@ -78,9 +83,21 @@ class Team:
 		trainer1 = trainer.Trainer()
 		return trainer1
 	
+	#~ def add_finances(self):
+		
+	
 	def print_players(self):
+		print "{:2}#  | {:<8}FN {:<13.13}LN | {:2}S | {:2}G | {:2}A | {:2}P".format("","","","","","","")
 		for i in range(0, len(self.players)):
-			print(str(i+1) + ". " + self.players[i].first_name + " " + self.players[i].last_name + " - Staerke: " + str(self.players[i].strength) + " - Offensive: " + str(self.players[i].offense) + " - Tore: " + str(self.players[i].shot_goals) + " - Alter: " + str(self.players[i].age) + " - Position: " + str(self.players[i].position))
+			print "{no:3}. | {pfn:10} {pln:15.15} | {stn:3} | {goa:3} | {age:3} | {pos:3}".format(no = i+1,
+																									pfn = self.players[i].first_name,
+																									pln = self.players[i].last_name,
+																									stn = self.players[i].strength,
+																									goa = self.players[i].shot_goals,
+																									age = self.players[i].age,
+																									pos = self.players[i].position)
+
+			#~ print(str(i+1) + ". " + self.players[i].first_name + " " + self.players[i].last_name + " - Staerke: " + str(self.players[i].strength) + " - Offensive: " + str(self.players[i].offense) + " - Tore: " + str(self.players[i].shot_goals) + " - Alter: " + str(self.players[i].age) + " - Position: " + str(self.players[i].position))
 
 	def ageing_players(self):
 		for i in range(0, len(self.players)):
@@ -104,12 +121,23 @@ def sort_teams_by_title(teams):
 	
 	return teams_sorted_title
 
-def get_teams_from_text():
+def get_teams_from_text(index):
+	
+	"""
+	Method to retrieve a list of team instances from a text file
+	Input: index, representing the amount of teams to get from the text file
+	Output: list of instances of object Team
+	"""
+	
 	teams = []
 	List = open("teams/teams.txt",'r').read().splitlines()
+	
+	j = 0
 	for i in range(0,len(List)):
-		dummy_team = Team(List[i], "Wappen")
-		teams.append(dummy_team)
+		if j < index:
+			dummy_team = Team(List[i], "Wappen")
+			teams.append(dummy_team)
+		j = j+1
 	return teams
 
 def get_teams_from_league(teams, league):
@@ -139,12 +167,15 @@ def set_league(teams, l):
 	input: list of Team instances and an integer in range [1,10]
 	output: list of Team instances"""
 	
+	#~ print teams[0].name
+	
 	if l>0 and l<10:
 		for team in teams:
 			team.league = l
 		
 	else:
 		print("Error! Only leagues between 1 and 9 can be set.")
+	
 	return teams
 
 def print_top_scorers(teams):
@@ -179,3 +210,8 @@ def print_teams_by_titles(teams):
 															tname = teams_sorted[i].name, 
 															tt = teams_sorted[i].title)
 	print ""
+
+def print_teams(teams):
+	for i in range (0,len(teams)):
+		print "{no:3}. | {tname:23.23}".format(no = i+1,
+											tname = teams[i].name)
