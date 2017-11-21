@@ -121,7 +121,7 @@ def sort_teams_by_title(teams):
 	
 	return teams_sorted_title
 
-def get_teams_from_text(index):
+def get_teams_from_text(file_name, index):
 	
 	"""
 	Method to retrieve a list of team instances from a text file
@@ -130,7 +130,8 @@ def get_teams_from_text(index):
 	"""
 	
 	teams = []
-	List = open("teams/teams.txt",'r').read().splitlines()
+	#~ List = open("teams/teams.txt",'r').read().splitlines()
+	List = open("teams/" + file_name + ".txt",'r').read().splitlines()
 	
 	j = 0
 	for i in range(0,len(List)):
