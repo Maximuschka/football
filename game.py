@@ -19,21 +19,24 @@ class Game:
 		
 		#~ print("")
 
-def game_improved(team_a, team_b):
+def game_improved(team_a, team_b, year, md):
 
 	"""Method to calculate the results of a game between two teams. Method sets different instance parameters, based on game results
 	Input: two Team instances
 	Outpt: two Team instances"""
 
+	team_a.home_md = True
+	team_b.home_md = False
+
 	if team_a.training_status == True:
-		team_a.train(random.randint(0,3))
+		team_a.train()
 		#~ team_a.train(0)
 		#~ team_a.train(1)
 		#~ team_a.train(2)
 		#~ team_a.train(3)
 
 	if team_b.training_status == True:
-		team_b.train(random.randint(0,3))
+		team_b.train()
 		#~ team_b.train(0)
 		#~ team_b.train(1)
 		#~ team_b.train(2)
@@ -79,27 +82,35 @@ def game_improved(team_a, team_b):
 	team_a.games_played = team_a.games_played+1
 	team_b.games_played = team_b.games_played+1
 
+	#~ Team A wins
+
 	if game1.score_team_a > game1.score_team_b:
 		team_a.points = team_a.points+3
-		#~ team_a.finances.set_matchday_cash_won()
+		finances.set_finances_md(team_a, 0, year, md)
+		finances.set_finances_md(team_b, 2, year, md)
 		if team_a.moral < 4:
 			team_a.moral = team_a.moral+1
 		if team_b.moral > 0:
 			team_b.moral = team_b.moral-1
+
+	#~ Draw
+
 	elif game1.score_team_a == game1.score_team_b:
 		team_a.points = team_a.points+1
-		#~ team_a.finances.set_matchday_cash_draw()
+		finances.set_finances_md(team_a, 1, year, md)
 		team_b.points = team_b.points+1
-		#~ team_b.finances.set_matchday_cash_draw()
+		finances.set_finances_md(team_b, 1, year, md)
+
+	#~ Team B wins
+
 	elif game1.score_team_a < game1.score_team_b:
 		team_b.points = team_b.points+3
-		#~ team_b.finances.set_matchday_cash_won()
+		finances.set_finances_md(team_a, 2, year, md)
+		finances.set_finances_md(team_b, 0, year, md)
 		if team_b.moral < 4:
 			team_b.moral = team_b.moral+1
 		if team_a.moral > 0:
 			team_a.moral = team_a.moral-1
-	
-	finances.set_matchday_cash(game1)
 	
 	#Output - Teamnames and Scores
 	print "{ta:23.23} |{g1} : {g2}| {tb:>23.23}".format(ta = team_a.name, tb = team_b.name, g1 = game1.score_team_a , g2=game1.score_team_b)

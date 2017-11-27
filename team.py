@@ -16,6 +16,7 @@ class Team:
 		self.wappen = wappen_image
 		self.trainer = self.add_trainer()
 		self.training_status = False
+		self.trained_feature = 0
 		self.tactic = randint(0,2)
 		self.moral = 2
 		self.games_played = 0
@@ -29,6 +30,9 @@ class Team:
 		self.title = 0
 		self.finances = finances.Finances(self)
 		self.stadium = stadium.Stadium(self)
+		self.home_md = False
+		#~ self.cost_matchdays = []
+		#~ self.income_matchdays = []
 
 		#Team category - good (70) or bad (35) - influences player strength when initiating Players
 
@@ -55,6 +59,44 @@ class Team:
 	def get_diff_goals(self):
 		diff_goals = self.scored_goals - self.received_goals
 		return diff_goals
+
+	def get_income_match_won(self):
+		income = 1000 / self.league
+		return income
+
+	def get_income_match_draw(self):
+		income = (1000 / self.league)/2
+		return income
+
+	#~ def set_cost_matchday(self):
+
+		#~ """WORK IN PROGRESS"""
+
+		#~ dummy_cost = 0
+		#~ for player in self.players:
+			#~ dummy_cost = dummy_cost + player.get_salary()
+
+		#~ dummy_cost = dummy_cost + self.trainer.get_salary()
+
+		#~ self.cost_matchdays.append(dummy_cost)
+
+	#~ def set_income_matchday(self):
+
+		#~ """WORK IN PROGRESS"""
+
+		#~ dummy_income = 0
+		
+		#~ if self.home_md == True:
+			#~ stadium_income = self.stadium.capacity * self.stadium.ticket_prize
+			#~ dummy_income += stadium_income
+		
+		#~ self.income_matchdays.append(dummy_income)
+
+	def set_training_status(self, status):
+		self.training_status = status
+
+	def set_trained_feature(self, feature):
+		self.trained_feature = feature
 
 	def set_current_strength(self):
 		self.strength = self.get_strength() 
@@ -103,11 +145,9 @@ class Team:
 		for i in range(0, len(self.players)):
 			self.players[i].age = self.players[i].age + 1
 
-	def train(self, feature):
+	def train(self):
 		train_team = training.Training(self)
-		train_team.train_feature(feature)
-
-
+		train_team.train_feature(self.trained_feature)
 
 def sort_teams(teams):
 	teams_sorted_diff = sorted(teams, key=lambda team:team.get_diff_goals(), reverse=True)

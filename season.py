@@ -7,17 +7,11 @@ import team
 import menues
 
 class Season:
-	
-	"""Class to store the information of a whole season"""
 
-	#~ def __init__(self, teams, manager):
-		#~ self.year = 2015
-		#~ self.matchday = 0
-		#~ self.matchdays = []
-		#~ self.teams = teams
-		#~ self.leagues = league.teams_to_leagues(self.teams)
-		#~ self.manager = manager
-		
+	"""
+	Central Class to process and store all information related to the football manager
+	"""
+
 	def __init__(self):
 		self.year = 2015
 		self.matchday = 0
@@ -48,30 +42,20 @@ class Season:
 	def add_manager(self, manager):
 		self.manager = manager
 
-def season_different_leagues(season):
-	
-	"""calculates all results of a season and prints table after each game day
-	Input: list of instances of object Team
-	Output: printed results and table of each game day"""
-	
-	if season.leagues[0].teams[0].points > 0:
-		league_rise_descent(2,2,season)
-		
-	run_season_manager(season)
-
 def run_season_md(season):
 	
-	"""WORK IN PROGRESS - with BUGS"""
-	
-	"""calculates all results of a season and prints table after each game day
-	Input: list of instances of object Team
-	Output: printed results and table of each game day"""
+	"""
+	Calculates all results of one matchday and prints the tables of all leagues played in that matchday
+	Input: instance of object season
+	Output: printed results and table of all leagues
+	"""
 		
 	md = season.matchday
 
 	if md == 0:
 		season = new_season(season)
 
+	s = season.year - 2016
 	menues.run_mainmenu(season)
 
 # i = Spieltag
@@ -89,7 +73,7 @@ def run_season_md(season):
 
 			while(j < len(season.leagues[k].teams)/2):
 				
-				game.game_improved(season.leagues[k].first_leg[md][j][0], season.leagues[k].first_leg[md][j][1])
+				game.game_improved(season.leagues[k].first_leg[md][j][0], season.leagues[k].first_leg[md][j][1], season.year, season.matchday)
 				
 				j = j+1
 
@@ -112,7 +96,7 @@ def run_season_md(season):
 
 			while(j < len(season.leagues[k].teams)/2):
 				
-				game.game_improved(season.leagues[k].second_leg[md_sl][j][0], season.leagues[k].second_leg[md_sl][j][1])
+				game.game_improved(season.leagues[k].second_leg[md_sl][j][0], season.leagues[k].second_leg[md_sl][j][1], season.year, season.matchday)
 				
 				j = j+1
 
@@ -125,12 +109,19 @@ def run_season_md(season):
 
 	season.matchday = season.matchday + 1
 
+	if season.matchday < (len(season.leagues[0].teams)-1)*2:
+		for i in range (0,len(season.leagues)):
+			for j in range (0,len(season.leagues[i].teams)):
+				season.leagues[i].teams[j].finances.cost_mds[s].append(0)
+				season.leagues[i].teams[j].finances.income_mds[s].append(0)
+
 	if season.matchday == (len(season.leagues[0].teams)-1)*2:
+
 		season.matchday = 0
 
-		for i in range (0,len(season.leagues)):
-			if season.leagues[i].teams[0].league == 1:
-				teams_sorted = team.sort_teams(season.leagues[i].teams)
+		for k in range (0,len(season.leagues)):
+			if season.leagues[k].teams[0].league == 1:
+				teams_sorted = team.sort_teams(season.leagues[k].teams)
 				teams_sorted[0].title = teams_sorted[0].title + 1
 		
 		print "Meister " + str(season.year) + ": " + teams_sorted[0].name
@@ -139,171 +130,20 @@ def run_season_md(season):
 		season.et = table.update_eternal_table(season.et, season.leagues[0].teams)
 		league_rise_descent(2,2,season)
 
-
-def run_season(season):
-	
-	"""calculates all results of a season and prints table after each game day
-	Input: list of instances of object Team
-	Output: printed results and table of each game day"""
-	
-	season = new_season(season)
-
-	#~ s1_2017 = Season()
-
-# i = Spieltag
-# j = Spiel / Spieltag
-
-	"""Kleines Problem: Aktuell muessen alle Ligen gleich viele Teams haben (siehe folgende while Schliefe mit Iterator i)"""
-
-	for i in range (0,len(season.leagues[0].teams)-1):
-		dummy_matchday = matchday.Matchday()
-		
-		for k in range (0,len(season.leagues)):
-			
-			j = 0
-
-			print(str(i+1) + ". Spieltag - " + str(k+1) + ". Liga")
-			print("")
-
-			while(j < len(season.leagues[k].teams)/2):
-				
-				game.game_improved(season.leagues[k].first_leg[i][j][0], season.leagues[k].first_leg[i][j][1])
-				#~ dummy_game = game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
-				#~ dummy_matchday.add_match(dummy_game)
-				
-				j = j+1
-
-			#~ s1_2017.add_matchday(dummy_matchday)
-
-			print("")
-			table.print_table(season.leagues[k].teams)
-			print("_____________________________________________")
-			raw_input("Press Enter to continue...")
-			print("")
-
-	for i in range (0,len(season.leagues[0].teams)-1):
-		dummy_matchday = matchday.Matchday()
-		
-		for k in range (0,len(season.leagues)):
-			
-			j = 0
-
-			print(str(i+(len(season.leagues[0].teams)-1)+1) + ". Spieltag - " + str(k+1) + ". Liga")
-			print("")
-
-			while(j < len(season.leagues[k].teams)/2):
-				
-				game.game_improved(season.leagues[k].second_leg[i][j][0], season.leagues[k].second_leg[i][j][1])
-				#~ dummy_game = game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
-				#~ dummy_matchday.add_match(dummy_game)
-				
-				j = j+1
-
-			#~ s1_2017.add_matchday(dummy_matchday)
-
-			print("")
-			table.print_table(season.leagues[k].teams)
-			print("_____________________________________________")
-			raw_input("Press Enter to continue...")
-			print("")
-
-	for i in range (0,len(season.leagues)):
-		if season.leagues[i].teams[0].league == 1:
-			teams_sorted = team.sort_teams(season.leagues[i].teams)
-			teams_sorted[0].title = teams_sorted[0].title + 1
-	
-	print "Meister " + str(season.year) + ": " + teams_sorted[0].name
-
-def run_season_manager(season):
-	
-	"""calculates all results of a season and prints table after each game day
-	Input: list of instances of object Team
-	Output: printed results and table of each game day"""
-	
-	season = new_season(season)
-
-	#~ s1_2017 = Season()
-
-# i = Spieltag
-# j = Spiel / Spieltag
-
-	"""Kleines Problem: Aktuell muessen alle Ligen gleich viele Teams haben (siehe folgende while Schliefe mit Iterator i)"""
-
-	for i in range (0,len(season.leagues[0].teams)-1):
-		dummy_matchday = matchday.Matchday()
-		
-		print("")
-		season.manager.set_training_status()
-		print("")
-
-		for k in range (0,len(season.leagues)):
-			
-			j = 0
-
-			print(str(i+1) + ". Spieltag - " + str(k+1) + ". Liga")
-			print("")
-
-			while(j < len(season.leagues[k].teams)/2):
-				
-				game.game_improved(season.leagues[k].first_leg[i][j][0], season.leagues[k].first_leg[i][j][1])
-				#~ dummy_game = game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
-				#~ dummy_matchday.add_match(dummy_game)
-				
-				j = j+1
-
-			#~ s1_2017.add_matchday(dummy_matchday)
-
-			print("")
-			table.print_table(season.leagues[k].teams)
-			print("_____________________________________________")
-			raw_input("Press Enter to continue...")
-			print("")
-
-	for i in range (0,len(season.leagues[0].teams)-1):
-		dummy_matchday = matchday.Matchday()
-		
-		print("")
-		season.manager.set_training_status()
-		print("")
-		
-		for k in range (0,len(season.leagues)):
-			
-			j = 0
-
-			print(str(i+(len(season.leagues[0].teams)-1)+1) + ". Spieltag - " + str(k+1) + ". Liga")
-			print("")
-
-			while(j < len(season.leagues[k].teams)/2):
-				
-				game.game_improved(season.leagues[k].second_leg[i][j][0], season.leagues[k].second_leg[i][j][1])
-				#~ dummy_game = game.game_improved(season.leagues[k].all_matches[i][j][0], season.leagues[k].all_matches[i][j][1])
-				#~ dummy_matchday.add_match(dummy_game)
-				
-				j = j+1
-
-			#~ s1_2017.add_matchday(dummy_matchday)
-
-			print("")
-			table.print_table(season.leagues[k].teams)
-			print("_____________________________________________")
-			raw_input("Press Enter to continue...")
-			print("")
-
-	for i in range (0,len(season.leagues)):
-		if season.leagues[i].teams[0].league == 1:
-			teams_sorted = team.sort_teams(season.leagues[i].teams)
-			teams_sorted[0].title = teams_sorted[0].title + 1
-	
-	print "Meister " + str(season.year) + ": " + teams_sorted[0].name
-
-
 def new_season(season):
-	"""sets back parameters to initial values
-	Input: list of instances of object Team
-	Output: list of parameters of object Team"""
+
+	"""
+	Sets back parameters to initial values (reset for beginning of season)
+	Input: instance of object season
+	Output: instance of object season
+	"""
+	
+	season.set_next_year()
+	season.set_new_season_matches()
+
+	s = season.year - 2016
 	
 	for i in range (0,len(season.leagues)):
-	
 		for team in season.leagues[i].teams:
 			team.games_played = 0
 			team.points = 0
@@ -314,18 +154,19 @@ def new_season(season):
 				team.players[i].shot_goals = 0
 			team.set_positions()
 			team.ageing_players()
-
-	season.set_new_season_matches()
-	
-	season.set_next_year()
+			team.finances.cost_mds.append([])
+			team.finances.cost_mds[s].append(0)
+			team.finances.income_mds.append([])
+			team.finances.income_mds[s].append(0)
 
 	return season
 
 def league_rise_descent(r,d, season):
 	
 	"""
-	input: list of instances of object Team, integer for number of teams rising (r) and number of teams descending (d)
-	output: list of instances of object Team
+	Method setting the season.league parameter depending on rise and descent of the past season
+	input: instance of object season, integer for number of teams rising (r) and number of teams descending (d)
+	output: manipulation of season.league paramter
 	"""
 	
 	l = len(season.leagues)
@@ -361,12 +202,13 @@ def league_rise_descent(r,d, season):
 		season.leagues[i].teams = []
 		season.leagues[i].teams.extend(teams_in_leagues[i])
 
-
 def fixtures(teams):
 
-	"""calculates fixtures for an entire season
+	"""
+	calculates fixtures for an entire season
 	Input: list of instances of object Team
-	Output: list of fixtures"""
+	Output: list of tuples of fixtures
+	"""
 
 	if len(teams) % 2:
 		teams.append('Day off')  # if team number is odd - use 'day off' as fake team     
@@ -383,21 +225,11 @@ def fixtures(teams):
 
 def get_first_leg(teams):
 	
-	matches = fixtures(teams)
-	set_matches = []
-
-	for f in matches:
-		n = len(f)
-		set_matches.append(zip(f[0:n/2],reversed(f[n/2:n])))
-
 	"""
-	!!!Der Swap fuer die Rueckspiele funktioniert nicht!!!
-	Maybe turn the list of a list of tuples into a list of lists of lists???
+	Sets the matches for first leg of a season
+	Input: List of tuples of instances of object team
+	Output: List of lists of tuples of instances of object team (array of set matches)
 	"""
-
-	return set_matches
-
-def get_second_leg(teams):
 	
 	matches = fixtures(teams)
 	set_matches = []
@@ -406,18 +238,34 @@ def get_second_leg(teams):
 		n = len(f)
 		set_matches.append(zip(f[0:n/2],reversed(f[n/2:n])))
 
+	return set_matches
+
+def get_second_leg(teams):
+
+	"""
+	Sets the matches for second leg of a season
+	Input: List of tuples of instances of object team
+	Output: List of lists of tuples of instances of object team (array of set matches)
+	"""
+
+	matches = fixtures(teams)
+	set_matches = []
+
+	for f in matches:
+		n = len(f)
+		set_matches.append(zip(f[0:n/2],reversed(f[n/2:n])))
+
 	set_reverse_matches = swap_teams_matches(set_matches, len(teams))
-	"""
-	!!!Der Swap fuer die Rueckspiele funktioniert nicht!!!
-	Maybe turn the list of a list of tuples into a list of lists of lists???
-	"""
 
 	return set_reverse_matches
 
 def swap_teams_matches(swapped_matches, length):
-	"""reverses the two oponents in a single game, for all games
+	
+	"""
+	reverses the two oponents in a single game, for all games
 	input is a list of a list of tuples (a) and an integer giving the amount of teams
-	output is a list of a list of tuples"""
+	output is a list of a list of tuples
+	"""
 
 	for i in range(0, length-1):
 		for j in range(0, length/2):

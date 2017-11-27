@@ -40,3 +40,7 @@ class Stadium:
 		else:
 			print "Ticket prize is too high."
 			return
+	
+	def get_income(self):
+		income = self.capacity * self.ticket_prize
+		return income
