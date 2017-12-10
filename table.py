@@ -43,7 +43,7 @@ def print_table(teams):
 																												tp = teams_sorted[i].points, 
 																												tdiff = teams_sorted[i].get_diff_goals(), 
 																												teff = int(teams_sorted[i].get_efficiency()), 
-																												ts = teams_sorted[i].strength, 
+																												ts = int(teams_sorted[i].strength), 
 																												tt = teams_sorted[i].tactic, 
 																												tm = teams_sorted[i].moral)
 		#~ print(str(i+1) + ". - " + teams_sorted[i].name + "  " + str(teams_sorted[i].games_played) + "   "+ str(teams_sorted[i].points) + "   " + str(teams_sorted[i].get_diff_goals()) + "  " + str(int(teams_sorted[i].get_efficiency())) + "   Staerke: " + str(teams_sorted[i].strength)+ "   Taktik: " + str(teams_sorted[i].tactic)+ "   Moral: " + str(teams_sorted[i].moral))

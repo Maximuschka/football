@@ -5,6 +5,7 @@ import table
 import memory 
 import trainer
 import player
+import test2
 
 
 def start_menu():
@@ -27,6 +28,8 @@ def start_menu():
 
 				if user_input == 2:
 					season_1 = memory.load_season()
+					print season_1.year
+					print season_1.matchday
 
 				else:
 					season_1 = season.Season()
@@ -72,11 +75,15 @@ def start_menu():
 
 			else:
 				print ""
-	
-		for season_1.matchday in range (0,(len(season_1.leagues[0].teams)*2)-2):
-			season.run_season_md(season_1)
+
+		while season_1.matchday < (len(season_1.leagues[0].teams)*2)-2:
+			if season_1.matchday == 0:
+				season_1 = season.new_season(season_1)
+			#~ season.new_matchday(season_1)
+			run_mainmenu(season_1)
 
 def run_mainmenu(season_1):
+	
 	print("_____________________________________________")
 	print "Main menu"
 	print ""
@@ -84,60 +91,73 @@ def run_mainmenu(season_1):
 	print ""
 	print "Team Manager: " + season_1.manager.name
 	print "Team: " + season_1.manager.team.name
+	print "Strength: " + str(int(season_1.manager.team.strength))
 	print "League: " + str(season_1.manager.team.league) + "."
+	print "Injured player: " + str(season_1.manager.team.count_injured_players())
 	print ""
-	print "1  - Players"
-	print "2  - Finances"
-	print "3  - Stadium"
-	print "4  - Training"
-	print "5  - Transfers"
-	print "6  - Table"
-	print "7  - Top Scorers"
-	print "8  - Eternal Table"
-	print "9  - Record winners"
-	print "10 - Next game"
-	print "11 - Load/Save"
-	print "12 - Exit"
+	print "1  - Next game"
+	print "2  - Players"
+	print "3  - Finances"
+	print "4  - Stadium"
+	print "5  - Training"
+	print "6  - Transfers"
+	print "7  - Table"
+	print "8  - Top Scorers"
+	print "9  - Eternal Table"
+	print "10 - Record winners"
+	print "11 - Preferences"
 	print ""
 	menu_id = raw_input("Please choose which menu to access. Menu ID: ")
 	print ""
 	try:
 		menu_id_int = int(menu_id)
+
 		if menu_id_int == 1:
-			run_players_menu(season_1)
+			run_next_game(season_1)
 
 		elif menu_id_int == 2:
-			run_finances_menu(season_1)
+			run_players_menu(season_1)
 
 		elif menu_id_int == 3:
-			run_stadium_menu(season_1)
+			run_finances_menu(season_1)
 
 		elif menu_id_int == 4:
-			run_training_menu(season_1)
+			run_stadium_menu(season_1)
 
 		elif menu_id_int == 5:
-			run_transfers(season_1)
+			run_training_menu(season_1)
 
 		elif menu_id_int == 6:
-			run_table(season_1)
+			run_transfers(season_1)
 
 		elif menu_id_int == 7:
-			run_top_scorers(season_1)
+			run_table(season_1)
 
 		elif menu_id_int == 8:
-			run_eternal_table(season_1)
+			run_top_scorers(season_1)
 
 		elif menu_id_int == 9:
+			run_eternal_table(season_1)
+
+		elif menu_id_int == 10:
 			run_record_winners(season_1)
 
 		elif menu_id_int == 10:
-			run_next_game()
+			run_preferences(season_1)
 
 		elif menu_id_int == 11:
-			season_1 = run_memory(season_1)
+			run_preferences(season_1)
 
 	except ValueError:
-		run_next_game()
+		run_next_game(season_1)
+
+def run_next_game(season_1):
+	condition = season.condition_md(season_1)
+	if condition == False:
+		print "Returning to main menu"
+		run_mainmenu(season_1)
+	elif condition == True:
+		season.run_season_md(season_1)
 
 def run_players_menu(season_1):
 	print("_____________________________________________")
@@ -145,14 +165,20 @@ def run_players_menu(season_1):
 	print ""
 	season_1.manager.team.print_players()
 	print ""
+	check = raw_input("Would you like substitute players?")
+
+	if check in ("Yes", "yes"):
+		season_1.manager.team.swap_player()
+
 	print raw_input("Press Enter to return to Main Menu...")
+	#~ return
 	run_mainmenu(season_1)
 	
 def run_finances_menu(season_1):
 	print("_____________________________________________")
 	print "Finances menu"
 	print ""
-	season_1.manager.team.finances.print_finances(season_1.year)
+	season_1.manager.team.finances.print_finances(season_1)
 	print ""
 	print raw_input("Press Enter to return to Main Menu...")
 	run_mainmenu(season_1)
@@ -176,7 +202,7 @@ def run_training_menu(season_1):
 	print("_____________________________________________")
 	print "Training menu"
 	print ""
-	season_1.manager.team.trainer.print_trainer()
+	trainer.print_trainers(season_1.manager.team.trainers)
 	print ""
 	
 	feature = 0
@@ -209,7 +235,7 @@ def run_transfers(season_1):
 	print ""
 
 	print ""
-	print "You have following trasfer options: "
+	print "You have following transfer options: "
 	print "1 - Sell player"
 	print "2 - Buy player"
 	print "3 - Sell trainer"
@@ -217,24 +243,20 @@ def run_transfers(season_1):
 	print ""
 	user_input = raw_input("What would you like to do?")
 
-	"""WORK IN PROGRESS!!!"""
-
 	print ""
 	try:
 		user_input = int(user_input)
 		if user_input == 1:
-			player.run_sell_player(season_1)
+			team.run_sell_player(season_1)
 
 		elif user_input == 2:
-			#~ run_buy_player(season_1)
-			run_mainmenu(season_1)
+			team.run_buy_player(season_1)
 
 		elif user_input == 3:
-			#~ run_sell_trainer(season_1)
-			run_mainmenu(season_1)
+			team.run_sell_trainer(season_1)
 
 		elif user_input == 4:
-			trainer.run_buy_trainer(season_1)
+			team.run_buy_trainer(season_1)
 
 	except ValueError:
 		run_mainmenu(season_1)
@@ -297,8 +319,26 @@ def run_record_winners(season_1):
 	print raw_input("Press Enter to return to Main Menu...")
 	run_mainmenu(season_1)
 
-def run_next_game():
-	return
+def run_preferences(season_1):
+	print("_____________________________________________")
+	print "Preferences:"
+	print ""
+	print "1  - Load/Save"
+	print "2  - Exit"
+	print ""
+	menu_id = raw_input("Please choose which menu to access. Menu ID: ")
+	print ""
+	try:
+		menu_id_int = int(menu_id)
+
+		if menu_id_int == 1:
+			season_1 = run_memory(season_1)
+
+		elif menu_id_int == 2:
+			quit()
+
+	except ValueError:
+		run_next_game(season_1)
 
 def run_memory(season_1):
 	print("_____________________________________________")
@@ -309,28 +349,29 @@ def run_memory(season_1):
 	print "2 - Save game"
 	print "3 - Back to Main Menu"
 	print ""
-	user_input = input("What would you like to do? " )
+	user_input = raw_input("What would you like to do? " )
 	print ""
 
-	if user_input == 1:
+	try:
+		user_input = int(user_input)
+		if user_input == 1:
+			season_1 = memory.load_season()
 
-		season_1 = memory.load_season()
+			print ""
+			print "Data is loaded."
+			print ""
+			print raw_input("Press Enter to return to Main Menu...")
+			run_mainmenu(season_1)
 
-		print ""
-		print "Data is loaded."
-		print ""
-		print raw_input("Press Enter to return to Main Menu...")
+		elif user_input == 2:
+			memory.save_season(season_1)
+
+			print ""
+			print "Data is stored."
+			print ""
+			print raw_input("Press Enter to return to Main Menu...")
+			run_mainmenu(season_1)
+
+	except ValueError:
 		run_mainmenu(season_1)
 
-	if user_input == 2:
-
-		memory.save_season(season_1)
-
-		print ""
-		print "Data is stored."
-		print ""
-		print raw_input("Press Enter to return to Main Menu...")
-		run_mainmenu(season_1)
-
-	else:
-		run_mainmenu(season_1)

@@ -1,5 +1,3 @@
-#leo was here!
-
 import team
 import random
 import finances
@@ -19,14 +17,11 @@ class Game:
 		
 		#~ print("")
 
-def game_improved(team_a, team_b, year, md):
+def game_improved(team_a, team_b, s, md):
 
 	"""Method to calculate the results of a game between two teams. Method sets different instance parameters, based on game results
-	Input: two Team instances
+	Input: two Team instances, Season count s, and matchday count md
 	Outpt: two Team instances"""
-
-	team_a.home_md = True
-	team_b.home_md = False
 
 	if team_a.training_status == True:
 		team_a.train()
@@ -41,6 +36,11 @@ def game_improved(team_a, team_b, year, md):
 		#~ team_b.train(1)
 		#~ team_b.train(2)
 		#~ team_b.train(3)
+
+	team_a.home_md = True
+	team_b.home_md = False
+	team_a.set_current_strength()
+	team_b.set_current_strength()
 
 	game1 = Game(team_a,team_b)
 	team_a.set_tactic_random()
@@ -86,8 +86,8 @@ def game_improved(team_a, team_b, year, md):
 
 	if game1.score_team_a > game1.score_team_b:
 		team_a.points = team_a.points+3
-		finances.set_finances_md(team_a, 0, year, md)
-		finances.set_finances_md(team_b, 2, year, md)
+		finances.set_finances_md(team_a, 0, s, md)
+		finances.set_finances_md(team_b, 2, s, md)
 		if team_a.moral < 4:
 			team_a.moral = team_a.moral+1
 		if team_b.moral > 0:
@@ -97,20 +97,23 @@ def game_improved(team_a, team_b, year, md):
 
 	elif game1.score_team_a == game1.score_team_b:
 		team_a.points = team_a.points+1
-		finances.set_finances_md(team_a, 1, year, md)
+		finances.set_finances_md(team_a, 1, s, md)
 		team_b.points = team_b.points+1
-		finances.set_finances_md(team_b, 1, year, md)
+		finances.set_finances_md(team_b, 1, s, md)
 
 	#~ Team B wins
 
 	elif game1.score_team_a < game1.score_team_b:
 		team_b.points = team_b.points+3
-		finances.set_finances_md(team_a, 2, year, md)
-		finances.set_finances_md(team_b, 0, year, md)
+		finances.set_finances_md(team_a, 2, s, md)
+		finances.set_finances_md(team_b, 0, s, md)
 		if team_b.moral < 4:
 			team_b.moral = team_b.moral+1
 		if team_a.moral > 0:
 			team_a.moral = team_a.moral-1
+	
+	#~ team_a.injury()
+	#~ team_b.injury()
 	
 	#Output - Teamnames and Scores
 	print "{ta:23.23} |{g1} : {g2}| {tb:>23.23}".format(ta = team_a.name, tb = team_b.name, g1 = game1.score_team_a , g2=game1.score_team_b)
@@ -151,14 +154,17 @@ def scoring_player(team):
 	Input: instance of object Team
 	Output: instance of object Team"""
 
-	for i in range(0,len(team.players)):
-		team.players[i].help_p = team.players[i].position * (random.randint(0,10) + team.players[i].strength/5)
+	active_players = team.players[0:11]
+
+	for i in range(0,len(active_players)):
+		active_players[i].help_p = active_players[i].position * (random.randint(0,10) + active_players[i].strength/5)
 		
 	scorer = []
-	scorer = sorted(team.players, key=attrgetter('help_p'), reverse=True)
+	scorer = sorted(active_players, key=attrgetter('help_p'), reverse=True)
 	
 	for i in range(0,len(team.players)):
 		if (scorer[0].first_name == team.players[i].first_name and scorer[0].last_name == team.players[i].last_name and scorer[0].age == team.players[i].age):
-			team.players[i].shot_goals = team.players[i].shot_goals + 1
+			team.players[i].shot_goals += 1
+			team.players[i].shot_goals_career += 1
 
 	return team

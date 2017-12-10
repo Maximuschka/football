@@ -5,6 +5,9 @@ import table
 import league
 import team
 import menues
+import finances
+import player
+import trainer
 
 class Season:
 
@@ -13,13 +16,19 @@ class Season:
 	"""
 
 	def __init__(self):
-		self.year = 2015
+		self.start_year = 2015
+		self.year = self.start_year
 		self.matchday = 0
 		self.matchdays = []
 		self.teams = []
 		self.leagues = []
 		self.manager = ""
 		self.et = table.Table("Eternal Table")
+		#Players for hire:
+		self.players_fh = player.get_random_players(15)
+		#Trainers for hire:
+		self.trainers_fh = trainer.get_random_trainers(10)
+		self.injured_players = []
 		
 	def add_matchday(self, matchday):
 		
@@ -34,6 +43,9 @@ class Season:
 
 	def set_next_year(self):
 		self.year = self.year + 1
+
+	def get_season_count(self):
+		return self.year - self.start_year
 		
 	def add_teams(self, teams):
 		self.teams = teams
@@ -49,14 +61,10 @@ def run_season_md(season):
 	Input: instance of object season
 	Output: printed results and table of all leagues
 	"""
-		
+
 	md = season.matchday
 
-	if md == 0:
-		season = new_season(season)
-
-	s = season.year - 2016
-	menues.run_mainmenu(season)
+	s = season.get_season_count()
 
 # i = Spieltag
 # j = Spiel / Spieltag
@@ -73,8 +81,7 @@ def run_season_md(season):
 
 			while(j < len(season.leagues[k].teams)/2):
 				
-				game.game_improved(season.leagues[k].first_leg[md][j][0], season.leagues[k].first_leg[md][j][1], season.year, season.matchday)
-				
+				game.game_improved(season.leagues[k].first_leg[md][j][0], season.leagues[k].first_leg[md][j][1], s, season.matchday)
 				j = j+1
 
 			print""
@@ -96,7 +103,7 @@ def run_season_md(season):
 
 			while(j < len(season.leagues[k].teams)/2):
 				
-				game.game_improved(season.leagues[k].second_leg[md_sl][j][0], season.leagues[k].second_leg[md_sl][j][1], season.year, season.matchday)
+				game.game_improved(season.leagues[k].second_leg[md_sl][j][0], season.leagues[k].second_leg[md_sl][j][1], s, season.matchday)
 				
 				j = j+1
 
@@ -107,7 +114,9 @@ def run_season_md(season):
 		
 		print ""
 
-	season.matchday = season.matchday + 1
+	#~ season.matchday = season.matchday + 1
+	end_matchday(season)
+	#~ add_del_trainer_player_fh(season,1,1)
 
 	if season.matchday < (len(season.leagues[0].teams)-1)*2:
 		for i in range (0,len(season.leagues)):
@@ -116,19 +125,8 @@ def run_season_md(season):
 				season.leagues[i].teams[j].finances.income_mds[s].append(0)
 
 	if season.matchday == (len(season.leagues[0].teams)-1)*2:
+		season = end_season(season)
 
-		season.matchday = 0
-
-		for k in range (0,len(season.leagues)):
-			if season.leagues[k].teams[0].league == 1:
-				teams_sorted = team.sort_teams(season.leagues[k].teams)
-				teams_sorted[0].title = teams_sorted[0].title + 1
-		
-		print "Meister " + str(season.year) + ": " + teams_sorted[0].name
-		print ""
-		
-		season.et = table.update_eternal_table(season.et, season.leagues[0].teams)
-		league_rise_descent(2,2,season)
 
 def new_season(season):
 
@@ -138,10 +136,10 @@ def new_season(season):
 	Output: instance of object season
 	"""
 	
-	season.set_next_year()
 	season.set_new_season_matches()
+	finances.add_finance_lists(season)
 
-	s = season.year - 2016
+	s = season.get_season_count()
 	
 	for i in range (0,len(season.leagues)):
 		for team in season.leagues[i].teams:
@@ -152,14 +150,62 @@ def new_season(season):
 			team.attempts = 0
 			for i in range(0, len(team.players)):
 				team.players[i].shot_goals = 0
-			team.set_positions()
+				team.players[i].state = 100
+				team.players[i].set_salary(team.league)
+			#~ team.set_positions()
 			team.ageing_players()
-			team.finances.cost_mds.append([])
-			team.finances.cost_mds[s].append(0)
-			team.finances.income_mds.append([])
-			team.finances.income_mds[s].append(0)
+			team.team_deacay()
+			team.players.extend(player.get_youth_players(team))
+			player.delete_old_players(team.players)
 
 	return season
+
+def end_season(season):
+
+	season.matchday = 0
+
+	for k in range (0,len(season.leagues)):
+		if season.leagues[k].teams[0].league == 1:
+			teams_sorted = team.sort_teams(season.leagues[k].teams)
+			teams_sorted[0].title = teams_sorted[0].title + 1
+	
+	print "Meister " + str(season.year) + ": " + teams_sorted[0].name
+	print ""
+	
+	season.et = table.update_eternal_table(season.et, season.leagues[0].teams)
+	league_rise_descent(2,2,season)
+	
+	season.set_next_year()
+	
+	return season
+
+def end_matchday(season):
+	season.matchday = season.matchday + 1
+	add_del_trainer_player_fh(season,1,1)
+
+	for team in season.teams:
+		injured_players_team = team.injury()
+		season.injured_players.extend(injured_players_team)
+
+		team.state_change()
+
+	for i in range (0,len(season.injured_players)):
+		season.injured_players[i].new_matchday_injury_d()
+	
+	j = 0
+	while j < len(season.injured_players):
+		if season.injured_players[j].injury_d == 0:
+			season.injured_players.pop(j)
+			j -= 1
+		j += 1
+
+def condition_md(season):
+	
+	conditions = []
+	
+	conditions.append(season.manager.team.condition_md_team())
+	
+	return all(conditions)
 
 def league_rise_descent(r,d, season):
 	
@@ -322,3 +368,19 @@ def get_list_of_teams_from_season(season):
 		all_teams.extend(season.leagues[i].teams)
 
 	return all_teams
+
+def add_del_trainer_player_fh(season, add_del_p, add_del_t):
+	
+	"""
+	Method to add and delete players and trainers from the for hire lists in the season instance
+	Input: Instance of Season, integers (amount of instances Team and Player to be added and deleted)
+	"""
+	
+	new_players = player.get_random_players(add_del_p)
+	new_trainers = trainer.get_random_trainers(add_del_t)
+
+	player.delete_random_players(season.players_fh, add_del_p)
+	trainer.delete_random_trainers(season.trainers_fh, add_del_t)
+
+	season.players_fh.extend(new_players)
+	season.trainers_fh.extend(new_trainers)

@@ -32,33 +32,29 @@ class Training:
 	def train_offense(self):
 		
 		for player in self.team.players:
-			if improv_chance(self.team.trainer.ability) == True:
+			if improv_chance(self.team.trainers[0].ability) == True:
 				player.offense = player.offense + 1
 				player.strength = player.get_strength()
-		self.team.set_current_strength()
 
 	def train_defense(self):
 		for player in self.team.players:
-			if improv_chance(self.team.trainer.ability) == True:
+			if improv_chance(self.team.trainers[0].ability) == True:
 				player.defense = player.defense + 1
 				player.strength = player.get_strength()
-		self.team.set_current_strength()
 
 	def train_power(self):
 		for player in self.team.players:
 			self.strength = self.team.get_strength()
-			if improv_chance(self.team.trainer.ability) == True:
+			if improv_chance(self.team.trainers[0].ability) == True:
 				player.power = player.power + 1
 				player.strength = player.get_strength()
-		self.team.set_current_strength()
 
 	def train_endurance(self):
 		for player in self.team.players:
 			self.strength = self.team.get_strength()
-			if improv_chance(self.team.trainer.ability) == True:
+			if improv_chance(self.team.trainers[0].ability) == True:
 				player.endurance = player.endurance + 1
 				player.strength = player.get_strength()
-		self.team.set_current_strength()
 
 def improv_chance(trainer):
 	
