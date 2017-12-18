@@ -29,6 +29,7 @@ class Season:
 		#Trainers for hire:
 		self.trainers_fh = trainer.get_random_trainers(10)
 		self.injured_players = []
+		self.construction_stadiums = []
 		
 	def add_matchday(self, matchday):
 		
@@ -153,6 +154,7 @@ def new_season(season):
 				team.players[i].state = 100
 				team.players[i].set_salary(team.league)
 			#~ team.set_positions()
+			team.set_guest_potential()
 			team.ageing_players()
 			team.team_deacay()
 			team.players.extend(player.get_youth_players(team))

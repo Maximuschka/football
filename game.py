@@ -39,6 +39,10 @@ def game_improved(team_a, team_b, s, md):
 
 	team_a.home_md = True
 	team_b.home_md = False
+
+	if team_a.stadium.construction == True:
+		team_a.stadium.end_construction(md)
+
 	team_a.set_current_strength()
 	team_b.set_current_strength()
 
@@ -86,8 +90,8 @@ def game_improved(team_a, team_b, s, md):
 
 	if game1.score_team_a > game1.score_team_b:
 		team_a.points = team_a.points+3
-		finances.set_finances_md(team_a, 0, s, md)
-		finances.set_finances_md(team_b, 2, s, md)
+		finances.set_finances_md(team_a, team_b, 0, s, md)
+		finances.set_finances_md(team_b, team_a, 2, s, md)
 		if team_a.moral < 4:
 			team_a.moral = team_a.moral+1
 		if team_b.moral > 0:
@@ -97,23 +101,20 @@ def game_improved(team_a, team_b, s, md):
 
 	elif game1.score_team_a == game1.score_team_b:
 		team_a.points = team_a.points+1
-		finances.set_finances_md(team_a, 1, s, md)
+		finances.set_finances_md(team_a, team_b, 1, s, md)
 		team_b.points = team_b.points+1
-		finances.set_finances_md(team_b, 1, s, md)
+		finances.set_finances_md(team_b, team_a, 1, s, md)
 
 	#~ Team B wins
 
 	elif game1.score_team_a < game1.score_team_b:
 		team_b.points = team_b.points+3
-		finances.set_finances_md(team_a, 2, s, md)
-		finances.set_finances_md(team_b, 0, s, md)
+		finances.set_finances_md(team_a, team_b, 2, s, md)
+		finances.set_finances_md(team_b, team_a, 0, s, md)
 		if team_b.moral < 4:
 			team_b.moral = team_b.moral+1
 		if team_a.moral > 0:
 			team_a.moral = team_a.moral-1
-	
-	#~ team_a.injury()
-	#~ team_b.injury()
 	
 	#Output - Teamnames and Scores
 	print "{ta:23.23} |{g1} : {g2}| {tb:>23.23}".format(ta = team_a.name, tb = team_b.name, g1 = game1.score_team_a , g2=game1.score_team_b)
@@ -126,7 +127,7 @@ def chance(team_a, team_b):
 	Input: two instances of object Team
 	Output: bool"""
 
-	while True:		
+	while True:
 
 		chance_a = random.randrange(1,80) + team_a.strength/4 + team_a.tactic + team_a.moral
 		chance_b = random.randrange(1,80) + team_b.strength/4 + team_b.tactic + team_b.moral

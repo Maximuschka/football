@@ -5,6 +5,7 @@ import table
 import memory 
 import trainer
 import player
+import stadium
 import test2
 
 
@@ -152,12 +153,12 @@ def run_mainmenu(season_1):
 		run_next_game(season_1)
 
 def run_next_game(season_1):
-	condition = season.condition_md(season_1)
-	if condition == False:
-		print "Returning to main menu"
-		run_mainmenu(season_1)
-	elif condition == True:
-		season.run_season_md(season_1)
+	#~ condition = season.condition_md(season_1)
+	#~ if condition == False:
+		#~ print "Returning to main menu"
+		#~ run_mainmenu(season_1)
+	#~ elif condition == True:
+	season.run_season_md(season_1)
 
 def run_players_menu(season_1):
 	print("_____________________________________________")
@@ -184,16 +185,39 @@ def run_finances_menu(season_1):
 	run_mainmenu(season_1)
 
 def run_stadium_menu(season_1):
+
+	md = season_1.matchday
+	s = season_1.get_season_count()
+
 	print("_____________________________________________")
 	print "Stadium menu"
 	print ""
 	season_1.manager.team.stadium.print_stadium_info()
 	
-	check = raw_input("Would you like to change the ticket prize?")
+	print ""
+	print "1  - Change ticket prize"
+	print "2  - Increase capacity"
+	print "3  - Return to main menu"
+	print ""
+	menu_id = raw_input("Please choose which menu to access. Menu ID: ")
 
-	if check in ("Yes", "yes"):
-		season_1.manager.team.stadium.request_new_ticket_prize()
-	
+	try:
+		menu_id_int = int(menu_id)
+
+		if menu_id_int == 1:
+			season_1.manager.team.stadium.request_new_ticket_prize()
+
+		elif menu_id_int == 2:
+			stadium.run_stadium_construction(season_1)
+		
+		elif menu_id_int == 3:
+			run_mainmenu(season_1)
+
+	except ValueError:
+		print "Input error!"
+		print ""
+		run_stadium_menu(season_1)
+
 	print ""
 	print raw_input("Press Enter to return to Main Menu...")
 	run_mainmenu(season_1)

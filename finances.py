@@ -76,7 +76,7 @@ class Finances:
 		self.cash = self.cash - cost
 		self.cost_mds[s][l] += cost
 
-def set_finances_md(team, res_id, s, md):
+def set_finances_md(team, op_team, res_id, s, md):
 	
 	"""
 	res_id:
@@ -85,15 +85,15 @@ def set_finances_md(team, res_id, s, md):
 	2 - lost
 	"""
 	
-	team.finances.cash += get_income_md(team, res_id, s, md)
+	team.finances.cash += get_income_md(team, op_team, res_id, s, md)
 	team.finances.cash -= get_cost_md(team, s, md)
 
-def get_income_md(team, res_id, s, md):
+def get_income_md(team, op_team, res_id, s, md):
 
 	income_md = 0
 
 	if team.home_md == True:
-		income_md += team.stadium.get_income()
+		income_md += team.stadium.get_income(op_team)
 
 	if res_id == 0:
 		income_md += team.get_income_match_won()
@@ -130,3 +130,7 @@ def add_finance_lists(season):
 			team.finances.income_mds[s].append(0)
 
 #~ def get_credit(amount, interest):
+
+
+
+

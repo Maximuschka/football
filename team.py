@@ -34,6 +34,7 @@ class Team:
 		self.title = 0
 		self.finances = finances.Finances(self)
 		self.stadium = stadium.Stadium(self)
+		self.guest_potential = 0
 		self.home_md = False
 
 #Team category - good (70) or bad (35) - influences player strength when initiating Players
@@ -78,6 +79,9 @@ class Team:
 	def get_income_match_draw(self):
 		income = (1000 / self.league)/2
 		return income
+
+	def set_guest_potential(self):
+		self.guest_potential = 40000 / (self.league*2)
 
 	def set_training_status(self, status):
 		self.training_status = status
