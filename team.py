@@ -287,6 +287,17 @@ def get_teams_from_league(teams, league):
 
 	return teams_1
 
+def get_team_names_in_list(teams):
+	team_names = []
+	for i in range (0,len(teams)):
+		team_names.append(teams[i].name)
+	return team_names
+
+def get_team_from_list(teams, team_name):
+	for i in range(0,len(teams)):
+		if teams[i].name == team_name:
+			return teams[i]
+
 def eq_name(team_a,team_list):
 	
 	"""This method compares the name of an instance Team to names of a list of instances Team
